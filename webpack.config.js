@@ -6,6 +6,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "public"),
     filename: "main.js",
+    publicPath: '/'
   },
 
   target: "web",
@@ -18,6 +19,9 @@ module.exports = {
   },
   resolve: {
     extensions: [".js", ".jsx", ".json", ".ts"],
+  },
+  devServer: {
+    historyApiFallback: true,
   },
   module: {
     rules: [

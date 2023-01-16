@@ -4,7 +4,6 @@ import List from "./list";
 import { useNavigate } from 'react-router-dom';
 
 
-
  function TodoList() {
     const navigate = useNavigate()
 
