@@ -1,10 +1,5 @@
 import './App.css';
 import IndexPage from './components';
-import { BrowserRouter as Router,
-  Routes,
-  Route,
-  Link } from "react-router-dom";
-import Hello from './components/ListPage'
 
 function App() {
   return (

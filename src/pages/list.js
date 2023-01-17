@@ -1,9 +1,25 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import TodoForm from './TodoForm'
 import Todo from './todo'
+import { async } from "@firebase/util";
+import { collection, doc, getDocs } from "firebase/firestore";
+import { db } from "../components/firebased-config";
 
 function List() {
+
 const [todos, setTodos] = useState([])
+const todosCollection = collection(db, "Todos");
+
+useEffect(() => {
+    const getTodos = async () => {
+        const resp = await getDocs(todosCollection);
+        setTodos(resp.docs.map((doc) => (
+            { ...doc.data(), id: doc.id}     
+        )))
+    }
+    getTodos();
+},[])
+
 const addTodo = todo => {
   if(!todo.text || /^\s*$/.test(todo.text)) {
     return
@@ -11,7 +27,8 @@ const addTodo = todo => {
 
   const newTodo = [todo, ...todos]
   setTodos(newTodo)
-  console.log(...todos)
+  console.log(newTodo)
+  console.log(todos)
 }
 
 const removeTodo = id => {

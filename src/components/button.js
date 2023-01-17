@@ -7,7 +7,7 @@ function Button() {
 
     return (
         <div className="third-div">
-            <Link to="/todoList"><button>Click Me</button></Link>
+            <Link to="/todoList"><button>進入系統</button></Link>
         </div>
     );
 }
