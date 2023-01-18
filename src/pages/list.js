@@ -1,34 +1,48 @@
 import React, {useState, useEffect} from 'react'
-import TodoForm from './TodoForm'
+import TodoForm from './todoForm'
 import Todo from './todo'
 import { async } from "@firebase/util";
-import { collection, doc, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../components/firebased-config";
+
 
 function List() {
 
 const [todos, setTodos] = useState([])
 const todosCollection = collection(db, "Todos");
-
+const getTodos = async () => {
+  const resp = await getDocs(todosCollection);
+  
+  setTodos(resp.docs.map((doc) => (
+      { ...doc.data(), id: doc.id }     
+  )))
+}
 useEffect(() => {
-    const getTodos = async () => {
-        const resp = await getDocs(todosCollection);
-        setTodos(resp.docs.map((doc) => (
-            { ...doc.data(), id: doc.id}     
-        )))
-    }
     getTodos();
 },[])
+
+const createTodo = async (todo) => {
+  await addDoc(todosCollection,{text: todo.text} )
+}
+
+const deleteTodo = async (id) => {
+  const todoDoc = doc(db, "Todos", id);
+  await deleteDoc(todoDoc)
+}
+const updateTodo = async (id ,newValue) => {
+  const newUpdates = {text: newValue.text};
+  const todoDoc = doc(db, "Todos", newValue.id);
+  await updateDoc(todoDoc, newUpdates);
+}
 
 const addTodo = todo => {
   if(!todo.text || /^\s*$/.test(todo.text)) {
     return
   }
-
+  createTodo(todo)
   const newTodo = [todo, ...todos]
   setTodos(newTodo)
-  console.log(newTodo)
-  console.log(todos)
+  getTodos()
 }
 
 const removeTodo = id => {
@@ -41,7 +55,6 @@ const updatedTodos = (todoID, newValue) => {
   if(!newValue.text || /^\s*$/.test(newValue.text)) {
     return
   }
-
   setTodos(prev => prev.map(item => (item.id === todoID ? newValue : item)));
 
 }
@@ -63,6 +76,8 @@ const completeTodo = id => {
         completeTodo={completeTodo}
         removeTodo={removeTodo}
         updatedTodos={updatedTodos}
+        onUpdate={updateTodo}
+        onDelete={deleteTodo}
         ></Todo>
     </div>
   )

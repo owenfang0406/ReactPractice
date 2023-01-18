@@ -10,9 +10,18 @@ useEffect(() => {
 const handleChange = e => {
     setInput(e.target.value)
 }
-console.log(props);
+
 const handleSubmit = e => {
     e.preventDefault();
+
+    if(props.edit) {
+        props.onSubmit({
+            id: props.edit.id,
+            text: input
+        });
+        setInput("")
+        return
+    }
 
     props.onSubmit({
         id: Math.floor(Math.random() * 10000),
