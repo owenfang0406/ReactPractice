@@ -1,10 +1,6 @@
 import "../styles/index.css";
 import React, { useState, useEffect } from 'react';
 import Button from "./button";
-import { Link, Router } from "react-router-dom";
-import { async } from "@firebase/util";
-import { collection, doc, getDocs } from "firebase/firestore";
-import { db } from "./firebased-config";
 
 
 function IndexPage() {

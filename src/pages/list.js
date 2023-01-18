@@ -3,7 +3,7 @@ import TodoForm from './todoForm'
 import Todo from './todo'
 import { async } from "@firebase/util";
 import { collection, doc, getDocs, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db } from "../components/firebased-config";
+import { db } from "../components/firebase-config";
 
 
 function List() {
